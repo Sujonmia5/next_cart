@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { User_Role } from "./utils.constents";
+import { User_Role } from "../utils/utils.constents";
 
-export type Role = (typeof User_Role)[keyof typeof User_Role];
+export type USER_ROLE = (typeof User_Role)[keyof typeof User_Role];
 
 export interface IUser {
   _id?: mongoose.Types.ObjectId;
@@ -15,5 +15,5 @@ export interface IUser {
   is_verified?: boolean;
   is_block?: boolean;
   profile_img?: string;
-  role: Role;
+  role: USER_ROLE;
 }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { User_Role } from "../types/utils.constents";
+import { User_Role } from "../utils/utils.constents";
 
 const createUserSchema = z.object({
   name: z

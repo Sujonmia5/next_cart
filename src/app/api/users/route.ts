@@ -4,9 +4,12 @@
 import { dbConnect } from "@/lib/mongoose";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
+import { protect } from "@/utils/apiProtection";
+import { USER_ROLE } from "@/types/user.interface";
+import { User_Role } from "@/utils/utils.constents";
 
-export const GET = async (req: NextRequest) => {
-  try {
+export const GET = protect(
+  async (req: NextRequest) => {
     dbConnect();
     const users = await User.find();
 
@@ -17,14 +20,8 @@ export const GET = async (req: NextRequest) => {
       statusCode: 200,
     };
     return NextResponse.json(responseData, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    const errorResponse = {
-      success: false,
-      message: "Failed to get users",
-      error: error,
-      statusCode: 500,
-    };
-    return NextResponse.json(errorResponse, { status: 500 });
-  }
-};
+  },
+  {
+    roles: [User_Role.admin],
+  },
+);

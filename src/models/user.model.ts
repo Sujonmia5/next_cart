@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 import { IUser } from "../types/user.interface";
-import { User_Role } from "../types/utils.constents";
+import { User_Role } from "../utils/utils.constents";
 
 const userSchema = new Schema<IUser>(
   {
@@ -58,7 +58,7 @@ const userSchema = new Schema<IUser>(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
 const UserModel = models.User || model<IUser>("User", userSchema);
