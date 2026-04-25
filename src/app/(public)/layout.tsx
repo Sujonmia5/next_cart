@@ -1,10 +1,12 @@
-import Navbar from "@/components/shared/navbar";
+import Navbar from "@/components/shared/navbar/navbar";
+import Footer from "@/components/shared/footer";
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      {children}
+      <div className="flex-1">{children}</div>
+      <Footer />
     </div>
   );
 };
