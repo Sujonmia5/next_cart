@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (currentUser) {
         try {
           const token = await currentUser.getIdToken();
-          await fetch("/api/auth/login-verify", {
+          await fetch("/api/auth/set-cookie", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token }),
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password,
       );
       await updateProfile(userCredential.user, { displayName: name });
-      
+
       const currentUser = auth.currentUser;
       if (currentUser) {
         setUser(currentUser);

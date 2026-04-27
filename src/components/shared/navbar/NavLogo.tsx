@@ -15,12 +15,6 @@ function NavLogo() {
         height={32}
         className="w-8 h-8 object-contain"
       />
-      <span
-        className="font-head font-extrabold text-[22px] tracking-tight text-ink"
-        style={{ fontFamily: "Syne, sans-serif" }}
-      >
-        Nex_Cart
-      </span>
     </Link>
   );
 }
