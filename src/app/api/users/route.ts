@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use server";
+export const dynamic = "force-dynamic";
 
 import { dbConnect } from "@/lib/mongoose";
 import User from "@/models/user.model";

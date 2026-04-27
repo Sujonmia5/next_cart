@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
+export const dynamic = "force-dynamic";
 import admin from "@/lib/firebase.admin";
 import { dbConnect } from "@/lib/mongoose";
 import UserModel from "@/models/user.model";

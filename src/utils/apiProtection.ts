@@ -68,7 +68,6 @@ export function protect<T extends unknown[]>(
         user = await getFirebaseUser(req);
       }
     } catch (err) {
-      console.log(err);
       const { message, statusCode } = handleError(err);
       return NextResponse.json(
         { success: false, message },
@@ -79,7 +78,6 @@ export function protect<T extends unknown[]>(
     try {
       return await handler(req, user, ...args);
     } catch (err) {
-      console.log(err);
       const { message, statusCode } = handleError(err);
       return NextResponse.json(
         { success: false, message },

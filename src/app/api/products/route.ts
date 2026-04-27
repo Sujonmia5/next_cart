@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import { dbConnect } from "@/lib/mongoose";
 import ProductModel from "@/models/product.model";
 import { protect } from "@/utils/apiProtection";
