@@ -1,8 +1,10 @@
 import { TProduct } from "@/types/product.interface";
+import Image from "next/image";
 
 /** Large featured product card */
 export const FeaturedCard = ({ product }: { product: TProduct }) => {
-  const imageUrl = product.imageUrl && product.imageUrl.length > 0 ? product.imageUrl[0] : "";
+  const imageUrl =
+    product.imageUrl && product.imageUrl.length > 0 ? product.imageUrl[0] : "";
   const displayPrice = product.price ? `$${product.price}` : "N/A";
 
   return (
@@ -17,7 +19,13 @@ export const FeaturedCard = ({ product }: { product: TProduct }) => {
                    text-5xl select-none group-hover:bg-accent-light transition-colors duration-300 overflow-hidden"
       >
         {imageUrl ? (
-          <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" />
+          <Image
+            width={50}
+            height={50}
+            src={imageUrl}
+            alt={product.title}
+            className="w-full h-full object-cover"
+          />
         ) : (
           "🎧"
         )}
@@ -37,9 +45,7 @@ export const FeaturedCard = ({ product }: { product: TProduct }) => {
 
         {/* Price */}
         <div className="flex items-baseline gap-2 mt-2">
-          <span className="text-lg font-bold text-ink">
-            {displayPrice}
-          </span>
+          <span className="text-lg font-bold text-ink">{displayPrice}</span>
           <span className="text-[10px] font-bold text-white bg-warm px-1.5 py-0.5 rounded-md uppercase">
             {product.priority}
           </span>

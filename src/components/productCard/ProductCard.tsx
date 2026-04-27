@@ -142,7 +142,9 @@ export const ProductCard = ({
       {/* ── Image area ─────────────────────────────────────────────── */}
       <div className="aspect-square bg-surface-3 relative flex items-center justify-center overflow-hidden">
         {imageUrl ? (
-          <img
+          <Image
+            width={100}
+            height={100}
             src={imageUrl}
             alt={product.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

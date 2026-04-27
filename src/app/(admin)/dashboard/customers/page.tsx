@@ -12,6 +12,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { IUser } from "@/types/user.interface";
+import Image from "next/image";
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<IUser[]>([]);
@@ -142,7 +143,9 @@ export default function CustomersPage() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-accent-light text-accent flex items-center justify-center font-bold text-sm overflow-hidden">
                           {customer.profile_img ? (
-                            <img
+                            <Image
+                              width={50}
+                              height={50}
                               src={customer.profile_img}
                               alt={customer.name}
                               className="w-full h-full object-cover"

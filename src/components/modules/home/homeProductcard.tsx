@@ -1,8 +1,10 @@
 import { TProduct } from "@/types/product.interface";
+import Image from "next/image";
 
 /** Small product card */
 export const HomeProductCard = ({ product }: { product: TProduct }) => {
-  const imageUrl = product.imageUrl && product.imageUrl.length > 0 ? product.imageUrl[0] : "";
+  const imageUrl =
+    product.imageUrl && product.imageUrl.length > 0 ? product.imageUrl[0] : "";
   const displayPrice = product.price ? `$${product.price}` : "N/A";
 
   return (
@@ -16,7 +18,13 @@ export const HomeProductCard = ({ product }: { product: TProduct }) => {
                    group-hover:bg-accent-light transition-colors duration-300 overflow-hidden"
       >
         {imageUrl ? (
-          <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" />
+          <Image
+            width={50}
+            height={50}
+            src={imageUrl}
+            alt={product.title}
+            className="w-full h-full object-cover"
+          />
         ) : (
           "📦"
         )}

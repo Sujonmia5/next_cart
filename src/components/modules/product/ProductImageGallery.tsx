@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, Variants } from "framer-motion";
+import Image from "next/image";
 
 const leftVariant: Variants = {
   hidden: { opacity: 0, x: -24 },
@@ -49,7 +50,12 @@ export const ProductImageGallery = ({
                           }`}
               aria-label={`Thumbnail ${i + 1}`}
             >
-              <img src={thumb} alt={`${title} ${i + 1}`} className="w-full h-full object-cover" />
+              <Image
+                width={50}
+                src={thumb}
+                alt={`${title} ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
             </button>
           ))}
         </div>
