@@ -9,6 +9,7 @@ interface NexInputProps {
   type?: string;
   placeholder?: string;
   required?: boolean;
+  className?: string;
 }
 
 const NexInput: React.FC<NexInputProps> = ({
@@ -17,6 +18,7 @@ const NexInput: React.FC<NexInputProps> = ({
   type = "text",
   placeholder,
   required = false,
+  className = "w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all",
 }) => {
   const {
     register,
@@ -40,7 +42,7 @@ const NexInput: React.FC<NexInputProps> = ({
         id={name}
         type={type}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all ${
+        className={`${className} ${
           errorMessage
             ? "border-red-500 focus:ring-red-200"
             : "border-gray-300 focus:ring-blue-200 focus:border-blue-500"

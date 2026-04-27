@@ -4,6 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { HomeProductCard } from "./homeProductcard";
 import { FeaturedCard } from "./FeaturedCard";
+import { TProduct } from "@/types/product.interface";
 
 /* ─── Animation Variants ─────────────────────────────────────────────── */
 const containerVariants: Variants = {
@@ -40,13 +41,6 @@ const TRUST_ITEMS = [
   { icon: "🚚", label: "Free Shipping $50+" },
   { icon: "↩️", label: "30-day Returns" },
   { icon: "⭐", label: "4.9/5 Rating" },
-];
-
-/* ─── Product Card Data ──────────────────────────────────────────────── */
-
-const SMALL_CARDS = [
-  { emoji: "⌚", name: "Apple Watch Ultra", price: "$799" },
-  { emoji: "💻", name: "MacBook Air M3", price: "$1,099" },
 ];
 
 /** Main headline */
@@ -144,7 +138,11 @@ function TrustBar() {
 }
 
 /* ─── Hero Section ───────────────────────────────────────────────────── */
-export default function HeroSection() {
+export default function HeroSection({ products }: { products: TProduct[] }) {
+  // Use first product as featured, next two as small cards
+  const featured = products[0];
+  const smallCards = products.slice(1, 3);
+
   return (
     <section
       id="hero-section"
@@ -152,7 +150,6 @@ export default function HeroSection() {
       className="relative min-h-screen bg-surface-2 flex items-center overflow-hidden"
     >
       {/* background effects */}
-
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -217,9 +214,9 @@ export default function HeroSection() {
             variants={rightColVariants}
             className="grid grid-cols-2 gap-4 w-full max-w-lg mx-auto lg:mx-0"
           >
-            <FeaturedCard />
-            {SMALL_CARDS.map((card) => (
-              <HomeProductCard key={card.name} {...card} />
+            {featured && <FeaturedCard product={featured} />}
+            {smallCards.map((card) => (
+              <HomeProductCard key={String(card._id)} product={card} />
             ))}
           </motion.div>
         </div>

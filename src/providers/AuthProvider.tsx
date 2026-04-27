@@ -14,6 +14,8 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
@@ -21,6 +23,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -32,17 +35,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        await fetch("/api/auth/login-verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
-          credentials: "include",
-        });
-        setUser(user);
-        setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const token = await currentUser.getIdToken();
+          await fetch("/api/auth/login-verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+            credentials: "include",
+          });
+          setUser(currentUser);
+        } catch (error) {
+          console.error("Failed to verify login on server:", error);
+        } finally {
+          setLoading(false);
+        }
       } else {
         setUser(null);
         setLoading(false);
@@ -69,9 +77,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password,
       );
       await updateProfile(userCredential.user, { displayName: name });
-      setUser({ ...userCredential.user, displayName: name });
+      
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        setUser(currentUser);
+      }
     } catch (error) {
       console.error("Error registering:", error);
+      throw error;
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
       throw error;
     }
   };
@@ -90,7 +112,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, loginWithGoogle, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

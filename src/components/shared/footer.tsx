@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 /* ─── Data ────────── */
@@ -63,25 +64,20 @@ export default function Footer() {
             <Link
               href="/"
               aria-label="Nex_Cart home"
-              className="inline-flex items-baseline gap-0 select-none"
+              className="inline-flex items-center gap-2 select-none"
             >
+              <Image
+                src="/nex_cart_logo.png"
+                alt="Nex_Cart Logo"
+                width={28}
+                height={28}
+                className="w-7 h-7 object-contain"
+              />
               <span
                 className="font-head font-extrabold text-2xl tracking-tight text-white"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
-                Nex
-              </span>
-              <span
-                className="font-head font-extrabold text-2xl tracking-tight text-accent"
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                _
-              </span>
-              <span
-                className="font-head font-extrabold text-2xl tracking-tight text-white"
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                Cart
+                Nex_Cart
               </span>
             </Link>
 

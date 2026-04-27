@@ -3,6 +3,7 @@ import { dbConnect } from "@/lib/mongoose";
 import ProductModel from "@/models/product.model";
 import { protect } from "@/utils/apiProtection";
 import { TDecodedToken } from "@/lib/firebase.auth";
+import { IUser } from "@/types/user.interface";
 import { User_Role } from "@/utils/utils.constents";
 import { AppError } from "@/lib/error";
 import { uploadToCloudinary } from "@/lib/cloudinary";
@@ -67,7 +68,7 @@ async function uploadImages(files: File[]): Promise<string[]> {
 
 // ─── GET /api/products/[id] ── (Public)
 export const GET = protect(
-  async (_req: NextRequest, _user: TDecodedToken | null, ctx: RouteContext) => {
+  async (_req: NextRequest, _user: TDecodedToken | IUser | null, ctx: RouteContext) => {
     await dbConnect();
     const { id } = await ctx.params;
     assertValidObjectId(id);
@@ -81,7 +82,7 @@ export const GET = protect(
 
 // ─── PUT /api/products/[id] ── (Admin | Superadmin)
 export const PUT = protect(
-  async (req: NextRequest, _user: TDecodedToken | null, ctx: RouteContext) => {
+  async (req: NextRequest, _user: TDecodedToken | IUser | null, ctx: RouteContext) => {
     await dbConnect();
     const { id } = await ctx.params;
     assertValidObjectId(id);
@@ -146,7 +147,7 @@ export const PUT = protect(
 
 // ─── DELETE /api/products/[id] ── (Admin | Superadmin)
 export const DELETE = protect(
-  async (_req: NextRequest, _user: TDecodedToken | null, ctx: RouteContext) => {
+  async (_req: NextRequest, _user: TDecodedToken | IUser | null, ctx: RouteContext) => {
     await dbConnect();
     const { id } = await ctx.params;
     assertValidObjectId(id);

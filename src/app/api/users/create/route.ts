@@ -7,7 +7,7 @@ import { UserValidation } from "@/validators/user.schema";
 
 export const POST = async (req: NextRequest) => {
   try {
-    dbConnect();
+    await dbConnect();
 
     const body = await req.json();
     const parseData = UserValidation.createUserSchema.parse(body);

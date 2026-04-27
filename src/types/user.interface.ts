@@ -17,3 +17,7 @@ export interface IUser {
   profile_img?: string;
   role: USER_ROLE;
 }
+
+export interface IUserModel extends mongoose.Model<IUser> {
+  isUserExistByEmail(email: string): Promise<IUser | null>;
+}

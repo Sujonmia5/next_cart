@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { IUser } from "../types/user.interface";
+import { IUser, IUserModel } from "../types/user.interface";
 import { User_Role } from "../utils/utils.constents";
 
 const userSchema = new Schema<IUser>(
@@ -18,7 +18,6 @@ const userSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
       select: false, // Don't return password by default
     },
     phone: {
@@ -52,7 +51,7 @@ const userSchema = new Schema<IUser>(
     role: {
       type: String,
       enum: Object.values(User_Role),
-      default: User_Role.user,
+      default: User_Role.admin,
     },
   },
   {
@@ -61,6 +60,11 @@ const userSchema = new Schema<IUser>(
   },
 );
 
-const UserModel = models.User || model<IUser>("User", userSchema);
+userSchema.statics.isUserExistByEmail = async function (email: string) {
+  return await this.findOne({ email });
+};
+
+const UserModel =
+  (models.User as IUserModel) || model<IUser, IUserModel>("User", userSchema);
 
 export default UserModel;

@@ -4,18 +4,17 @@ import { dbConnect } from "@/lib/mongoose";
 import ProductModel from "@/models/product.model";
 import { protect } from "@/utils/apiProtection";
 import { TDecodedToken } from "@/lib/firebase.auth";
+import { IUser } from "@/types/user.interface";
 import { User_Role } from "@/utils/utils.constents";
 import { AppError } from "@/lib/error";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { TProduct } from "@/types/product.interface";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// ─── Constants
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_IMAGES = 5;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Parse & validate all image files from FormData */
 function extractImages(formData: FormData): File[] {
   const files = formData.getAll("images") as File[];
 
@@ -50,39 +49,35 @@ async function uploadImages(files: File[]): Promise<string[]> {
 
 // ─── POST /api/products/create ── (Admin | Superadmin)
 export const POST = protect(
-  async (req: NextRequest, user: TDecodedToken | null) => {
+  async (req: NextRequest, user: TDecodedToken | IUser | null) => {
     await dbConnect();
 
     const formData = await req.formData().catch(() => {
       throw new AppError(400, "Failed to parse form data");
     });
 
-    // ── Text fields ──────────────────────────────────────────────────────────
-    const title = (formData.get("title") as string | null)?.trim();
-    const shortDescription = formData.get("shortDescription") as string | null;
-    const fullDescription = formData.get("fullDescription") as string | null;
-    const price = formData.get("price");
-    const date = formData.get("date");
-    const priority = formData.get("priority") as string | null;
+    const itemData: TProduct = JSON.parse(formData.get("data") as string);
 
-    if (!title || !shortDescription || !fullDescription)
+    if (
+      !itemData.title ||
+      !itemData.shortDescription ||
+      !itemData.fullDescription
+    )
       throw new AppError(
         400,
         "title, shortDescription, and fullDescription are required",
       );
 
-    // ── Image upload ─────────────────────────────────────────────────────────
     const files = extractImages(formData);
     const imageUrl = files.length ? await uploadImages(files) : [];
 
-    // ── Persist ──────────────────────────────────────────────────────────────
     const product = await ProductModel.create({
-      title,
-      shortDescription,
-      fullDescription,
-      price: price ? Number(price) : undefined,
-      date: date ? new Date(date as string) : undefined,
-      priority: priority || undefined,
+      title: itemData.title,
+      shortDescription: itemData.shortDescription,
+      fullDescription: itemData.fullDescription,
+      price: itemData.price ? Number(itemData.price) : 0,
+      date: itemData.date ? new Date(itemData.date) : new Date(),
+      priority: itemData.priority || "low",
       imageUrl,
     });
 

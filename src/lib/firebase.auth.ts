@@ -15,9 +15,8 @@ export const getFirebaseUser = async (
     return null;
   }
   try {
-    console.log(token);
     const decoded = await admin.auth().verifyIdToken(token);
-    console.log(decoded);
+
     return {
       uid: decoded.uid,
       email: decoded.email as string,

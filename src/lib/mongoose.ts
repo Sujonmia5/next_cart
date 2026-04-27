@@ -32,6 +32,7 @@ export const dbConnect = async () => {
       socketTimeoutMS: 45000,
       retryWrites: true,
     };
+
     cached.promise = mongoose.connect(mongodb_uri, opts).then((mongoose) => {
       console.log("MongoDB connected successfully");
       return mongoose;

@@ -5,11 +5,12 @@ import { dbConnect } from "@/lib/mongoose";
 import ProductModel from "@/models/product.model";
 import { protect } from "@/utils/apiProtection";
 import { TDecodedToken } from "@/lib/firebase.auth";
+import { IUser } from "@/types/user.interface";
 
 // ─── GET /api/products ─── (Public)
 
 const getProducts = protect(
-  async (req: NextRequest, _user: TDecodedToken | null) => {
+  async (req: NextRequest, _user: TDecodedToken | IUser | null) => {
     await dbConnect();
 
     const { searchParams } = new URL(req.url);
@@ -22,8 +23,13 @@ const getProducts = protect(
     const skip = (page - 1) * limit;
     const priority = searchParams.get("priority");
     const search = searchParams.get("search");
+    const ids = searchParams.get("ids");
 
     const filter: Record<string, any> = {};
+
+    if (ids) {
+      filter._id = { $in: ids.split(",") };
+    }
 
     if (priority && ["low", "medium", "high"].includes(priority)) {
       filter.priority = priority;
