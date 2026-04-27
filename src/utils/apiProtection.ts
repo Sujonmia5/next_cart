@@ -31,8 +31,6 @@ export async function requireAuth(req: NextRequest) {
 
 export async function requireRole(req: NextRequest, roles: USER_ROLE[]) {
   const user = await requireAuth(req);
-  console.log(roles);
-  console.log(user.role);
 
   if (!roles.includes(user.role as USER_ROLE)) {
     throw new AppError(403, "Access denied");

@@ -12,7 +12,5 @@ export default async function Page({
   const data = await res.json();
   const products = data?.data || [];
 
-  console.log(products);
-
   return <ShopClient products={products} />;
 }

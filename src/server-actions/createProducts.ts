@@ -7,7 +7,6 @@ export async function createProduct(formData: FormData) {
   try {
     const cookieStore = cookies();
     const authToken = cookieStore.get("auth-token")?.value;
-    console.log(authToken);
 
     const baseUrl = process.env.BASE_URL || "http://localhost:3000";
     const response = await fetch(`${baseUrl}/api/products/create`, {

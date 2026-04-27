@@ -97,7 +97,6 @@ export default async function ManageProductsPage({
     cache: "no-store",
   });
   const data = await res.json();
-  console.log(data);
 
   const handleDelete = async (id: string) => {
     "use server";
